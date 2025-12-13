@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counter with VDOM and Redux (JSX)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+
+    <script>
+        window.tailwind.config = {
+            content: ["./**/*.{html,js}"],
+            theme: {
+                extend: {},
+            },
+            plugins: [],
+        };
+    </script>
+    <script type="importmap">
+    {
+        "imports": {
+            "redux": "https://unpkg.com/redux@4.2.1/es/redux.mjs",
+            "acorn": "https://unpkg.com/acorn@8.11.3/dist/acorn.mjs",
+            "vdom":"./vdom/index.js",
+            "component": "./component.js"
+        }
+    }
+    </script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="module">
+        import { h, render } from 'vdom';
+        import Text from './components/Text/index.js'
+        import Button from './components/button/index.js'
+        
+        const root = document.getElementById('root');
+        let elTree= h('div', { class: 'p-4' },
+               h('h1', { class: 'text-2xl font-bold mb-4' }, 'Hello, VDOM with JSX!'),
+               h('button', { class: 'bg-blue-500 text-white px-4 py-2 rounded' }, 'Click Me'),
+               h('Button', { name: 'Vimalesan' },
+                   h('Text', null,"vimal")
+               )
+            );
+        console.log(elTree);
+        render(
+           elTree,
+            root
+        );
+        setTimeout(() => {
+            let newElTree= h('div', { class: 'p-4' },
+               h('h1', { class: 'text-2xl font-bold mb-4' }, 'Hello, VDOM with JSX! UPDATED'),
+               h('button', { class: 'bg-blue-500 text-white px-4 py-2 rounded' }, 'Click Me PLEASE'),
+               h('Button', { name: 'Vimalesan UPDATED' },
+                   h('Text', null,"vimal UPDATED")
+               )
+            );
+            console.log('updating...');
+            render(
+               newElTree,
+                root
+            );
+        }, 3000);   
+    </script>
+</body>
+</html>
