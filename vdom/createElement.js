@@ -26,8 +26,12 @@ function createComponentElement(vnode) {
 
 // 2️⃣ Create Real DOM from VDOM
 export function createElement(vnode) {
-  if (typeof vnode === 'string') {
-    return document.createTextNode(vnode);
+  if (vnode == null || typeof vnode === 'boolean') {
+    return document.createTextNode('');
+  }
+
+  if (typeof vnode === 'string' || typeof vnode === 'number') {
+    return document.createTextNode(String(vnode));
   }
   if (vnode && (typeof vnode.type !== 'string' || /[A-Z]/.test(vnode.type))) {
     return createComponentElement(vnode);

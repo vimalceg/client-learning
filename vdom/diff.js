@@ -5,7 +5,7 @@ import { getComponent } from './ComponentRegistry.js';
 
 // Helper to check if a vnode is a component
 function isComponent(vnode) {
-  if (!vnode || typeof vnode === 'string') return false;
+  if (!vnode || typeof vnode !== 'object') return false;
   return typeof vnode.type !== 'string' || /^[A-Z]/.test(vnode.type);
 }
 
@@ -19,6 +19,15 @@ function resolveComponentVNode(vnode) {
   
   let componentVDOM = componentFunc({ ...vnode.props, children: vnode.children });
   return componentVDOM ? resolveComponentVNode(componentVDOM) : null;
+}
+
+
+function isEmptyVNode(vnode) {
+  return vnode == null || typeof vnode === 'boolean';
+}
+
+function isTextVNode(vnode) {
+  return typeof vnode === 'string' || typeof vnode === 'number';
 }
 
 // 6️⃣ Key Detection
@@ -94,7 +103,11 @@ function diffChildren(oldChildren, newChildren, parentDom) {
 export function diff(oldVNode, newVNode, parentDom, index = 0) {
   const domNode = parentDom.childNodes[index];
 
-  if (!oldVNode) {
+  if (isEmptyVNode(oldVNode)) {
+    if (isEmptyVNode(newVNode)) {
+      return;
+    }
+
     const newDom = createElement(newVNode);
     if (newDom instanceof Node) {
       parentDom.appendChild(newDom);
@@ -102,7 +115,7 @@ export function diff(oldVNode, newVNode, parentDom, index = 0) {
     return;
   }
 
-  if (!newVNode) {
+  if (isEmptyVNode(newVNode)) {
     applyRef(oldVNode.ref, null);
     if (domNode && domNode instanceof Node) {
       parentDom.removeChild(domNode);
@@ -115,8 +128,8 @@ export function diff(oldVNode, newVNode, parentDom, index = 0) {
   const resolvedNewVNode = resolveComponentVNode(newVNode) || newVNode;
 
   // Text nodes
-  if (typeof oldVNode === 'string' || typeof newVNode === 'string') {
-    if (oldVNode !== newVNode) {
+  if (isTextVNode(oldVNode) || isTextVNode(newVNode)) {
+    if (String(oldVNode) !== String(newVNode)) {
       const newDom = createElement(newVNode);
       if (newDom instanceof Node && domNode instanceof Node) {
         parentDom.replaceChild(newDom, domNode);
