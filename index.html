@@ -22,8 +22,8 @@
         "imports": {
             "redux": "https://unpkg.com/redux@4.2.1/es/redux.mjs",
             "acorn": "https://unpkg.com/acorn@8.11.3/dist/acorn.mjs",
-            "vdom":"./vdom/index.js",
-            "component": "./component.js"
+            "vdom":"./src/vdom/index.js",
+            "component": "./src/vdom/component.js"
         }
     }
     </script>
@@ -32,8 +32,8 @@
     <div id="root"></div>
     <script type="module">
         import { h, render } from 'vdom';
-        import Text from './components/Text/index.js'
-        import Button from './components/button/index.js'
+        import Text from './src/components/text/index.js'
+        import Button from './src/components/button/index.js'
         
         const root = document.getElementById('root');
         let elTree= h('div', { class: 'p-4' },
