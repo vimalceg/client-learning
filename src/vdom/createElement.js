@@ -13,7 +13,6 @@ function createComponentElement(vnode) {
   }
   
   let componentVDOM = componentFunc({ ...vnode.props, children: vnode.children });
-  console.log('Creating element for component:', vnode.props, 'with VDOM:', componentVDOM);
   
   // Ensure componentVDOM is a valid vnode before recursing
   if (!componentVDOM) {
@@ -46,6 +45,6 @@ export function createElement(vnode) {
 
   // 🔑 APPLY REF
   applyRef(vnode.ref, el);
-  console.log('Created element:', el, 'from vnode:', vnode);
+  
   return el;
 }
