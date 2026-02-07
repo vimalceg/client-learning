@@ -1,5 +1,5 @@
 import { h } from 'vdom';
-import { transformJSX } from '../transformJSX.js';
+import { transformJSX } from '../compiler/transformJSX.js';
 import { registerComponent } from './ComponentRegistry.js';
 
 
