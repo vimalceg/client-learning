@@ -1,6 +1,4 @@
 // 1️⃣ Virtual DOM Node Helper
-import { getComponent } from './ComponentRegistry.js';
-
 export function h(type, rawProps = {}, ...children) {
   let ref = null;
   let key = null;
@@ -14,13 +12,16 @@ export function h(type, rawProps = {}, ...children) {
   
  
 
+  const normalizedChildren = children
+    .flat()
+    .filter(c => c !== null && c !== undefined && typeof c !== 'boolean')
+    .map(c => (typeof c === 'object' ? c : String(c)));
+
   return {
     type,
     key,
     ref,
     props,
-    children: children.flat().map(c =>
-      typeof c === 'object' ? c : String(c)
-    )
+    children: normalizedChildren
   };
 }
